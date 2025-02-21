@@ -1,25 +1,33 @@
 pipeline {
     agent any
+
+    tools {
+        maven 'Maven 3.9.9' // Ensure this matches the Maven installation name in Jenkins
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/YogendraSherpunja/maven-web-app.git'
+                checkout scm
             }
         }
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                bat 'mvn clean package'
             }
         }
-        stage('Test') {
+        stage('Archive') {
             steps {
-                sh 'mvn test'
+                archiveArtifacts artifacts: 'target/*.war', fingerprint: false
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application...'
-            }
+    }
+    post {
+        success {
+            echo 'Build successful! The WAR file is ready for deployment.'
+        }
+        failure {
+            echo 'Build failed! Please check the logs for details.'
         }
     }
 }
