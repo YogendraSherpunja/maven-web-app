@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven 3.9.9' // Ensure this matches the Maven installation name in Jenkins
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -9,7 +13,6 @@ pipeline {
         }
         stage('Build') {
             steps {
-                // Use 'bat' for Windows or 'sh' for Linux
                 bat 'mvn clean package'
             }
         }
