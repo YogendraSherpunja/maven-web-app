@@ -1,9 +1,10 @@
 pipeline {
     agent any
+
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main',url:'https://github.com/YogendraSherpunja/maven-web-app.git'
+                checkout scm
             }
         }
         stage('Build') {
@@ -11,15 +12,18 @@ pipeline {
                 bat 'mvn clean package'
             }
         }
-        stage('Test') {
+        stage('Archive') {
             steps {
-                bat 'mvn test'
+                archiveArtifacts artifacts: 'target/*.war', fingerprint: false
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application...'
-            }
+    }
+    post {
+        success {
+            echo 'Build successful! The WAR file is ready for deployment.'
+        }
+        failure {
+            echo 'Build failed! Please check the logs for details.'
         }
     }
 }
