@@ -9,6 +9,7 @@ pipeline {
         }
         stage('Build') {
             steps {
+                // Use 'bat' for Windows or 'sh' for Linux
                 bat 'mvn clean package'
             }
         }
