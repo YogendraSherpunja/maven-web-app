@@ -1,7 +1,9 @@
 pipeline {
     agent any
 
-
+    tools {
+        maven 'Maven 3.9.9'  
+    }
     environment {
         DOCKER_IMAGE = 'yogendra23/maven-webapp:latest' // Define Docker image name
     }
