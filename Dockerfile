@@ -1,5 +1,11 @@
-FROM jetty:11-jdk21
-COPY target/*.war /var/lib/jetty/webapps/app.war
-EXPOSE 8080
-CMD ["java", "-jar", "/usr/local/jetty/start.jar"]
+#Build the WAR file using Maven
+FROM maven:3.8.6-openjdk-21 AS build
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package
 
+# Deploy the WAR file to Jetty
+FROM jetty:11-jdk21
+COPY --from=build /app/target/Comp367_WebApp.war /var/lib/jetty/webapps/ROOT.war
+EXPOSE 8080
