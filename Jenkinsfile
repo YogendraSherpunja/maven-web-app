@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+
+    environment {
+        DOCKER_IMAGE = 'yogendra23/maven-webapp:latest' // Define Docker image name
+    }
     stages {
         stage('Checkout') {
             steps {
