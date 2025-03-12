@@ -34,18 +34,18 @@ pipeline {
             }
         }
 
-        stage('Docker Build') {
-            steps {
-                bat 'docker build -t yogendra23/webapp:latest .'
-            }
-        }
+          stage('Docker Build') {
+               steps {
+                   sh "docker build -t $DOCKER_IMAGE ."
+               }
+           }
 
-        stage('Docker Push') {
-            steps {
-                bat 'docker push yogendra23/webapp:latest'
-            }
-        }
-    }
+           stage('Docker Push') {
+               steps {
+                   sh "docker push $DOCKER_IMAGE"
+               }
+           }
+       }
 
     post {
         success {
